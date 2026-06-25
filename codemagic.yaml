@@ -17,18 +17,24 @@ workflows:
       - name: Setup Gradle wrapper
         script: |
           mkdir -p gradle/wrapper
-          curl -L https://github.com/gradle/gradle/releases/download/v8.14.1/gradle-8.14.1-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
+          # Download correct wrapper jar from Maven Central
+          curl -L "https://repo1.maven.org/maven2/org/gradle/gradle-wrapper/8.14.1/gradle-wrapper-8.14.1.jar" -o gradle/wrapper/gradle-wrapper.jar
+          # Verify it downloaded correctly
+          file gradle/wrapper/gradle-wrapper.jar
+          ls -lh gradle/wrapper/gradle-wrapper.jar
           cat > gradle/wrapper/gradle-wrapper.properties << 'PROPS'
-          distributionBase=GRADLE_USER_HOME
-          distributionPath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.14.1-bin.zip
-          networkTimeout=10000
-          validateDistributionUrl=true
-          zipStoreBase=GRADLE_USER_HOME
-          zipStorePath=wrapper/dists
-          PROPS
-          curl -L https://raw.githubusercontent.com/gradle/gradle/v8.14.1/gradlew -o gradlew
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.14.1-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+PROPS
+          # Download gradlew script
+          curl -L "https://raw.githubusercontent.com/gradle/gradle/v8.14.1/gradlew" -o gradlew
           chmod +x gradlew
+          echo "Wrapper setup complete"
       - name: Create debug keystore
         script: |
           keytool -genkeypair -v \
