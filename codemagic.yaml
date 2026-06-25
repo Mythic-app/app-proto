@@ -16,7 +16,7 @@ workflows:
           echo "SUPABASE_KEY=$SUPABASE_KEY" >> .env
       - name: Generate Gradle wrapper
         script: |
-          gradle wrapper --gradle-version 8.11.1
+          gradle wrapper --gradle-version 8.14.1 --distribution-type bin
           chmod +x gradlew
       - name: Create debug keystore
         script: |
